@@ -5,6 +5,14 @@
 
 Turn ten answers about a small custom or made-to-order manufacturing operation into a tailored, foundation-first operations plan and a runnable starter repo. About 99% of US manufacturers are small businesses, and most operational software is not built or priced for them: it assumes a budget, an IT team, and clean data already in a warehouse. This engine starts from what a small shop actually has. You answer ten questions (what you make, how it varies, how you sell, and so on) and it generates a plan built around one idea: get honest, relational product data first, because everything else depends on it. The output is deterministic (no LLM, no network, the same answers always produce the same plan), free, and MIT licensed.
 
+## Your first 15 minutes
+
+You do not need to install anything to get value out of this repo.
+
+1. **Read a plan for a shop like yours (minutes 0 to 3).** [blueprints/](blueprints/) holds pre-generated blueprints for four invented shops: a custom cabinet shop, a catalog furniture maker, a configurable sign shop, and a minimal general job shop. Pick the closest one and read its `plan.md` and `schema.sql`.
+2. **Generate your own (minutes 3 to 8).** Answer the ten questions at [damiankao.com/blueprint](https://damiankao.com/blueprint) (runs in your browser, nothing is sent anywhere), or clone this repo and use the CLI below. Either way you get a plan tailored to your answers and a starter repo you can download or write to disk.
+3. **Hand it to a coding agent (the rest).** Open the exported folder in Claude Code or Cursor and paste [prompts/build-with-an-agent.md](prompts/build-with-an-agent.md); the agent starts on the cost engine while you watch. [examples/northline-metalworks](examples/northline-metalworks) shows where that path leads: a working slice, built from an export like yours, that surfaced two money leaks hiding in a shop's own spreadsheets.
+
 ## Try it
 
 ### In the browser
