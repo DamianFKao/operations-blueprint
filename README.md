@@ -1,29 +1,48 @@
 # Operations Blueprint
 
-Turn a small custom manufacturer's answers into a tailored, foundation-first operations plan, and a
-runnable starter repo an AI coding agent (or a person) can build from. Deterministic: no LLM, no network,
-no company data. The same engine that powers the tool at
-[damiankao.com/blueprint](https://damiankao.com/blueprint).
+[![CI](https://github.com/DamianFKao/operations-blueprint/actions/workflows/ci.yml/badge.svg)](https://github.com/DamianFKao/operations-blueprint/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Most operations software assumes you are large: a budget, an IT team, clean data already in a warehouse.
-Small manufacturers have none of that. This gives them the opposite: a plan built around what they
-actually have, starting from the one thing everything else depends on, honest, relational product data.
+Turn ten answers about a small custom or made-to-order manufacturing operation into a tailored, foundation-first operations plan and a runnable starter repo. About 99% of US manufacturers are small businesses, and most operational software is not built or priced for them: it assumes a budget, an IT team, and clean data already in a warehouse. This engine starts from what a small shop actually has. You answer ten questions (what you make, how it varies, how you sell, and so on) and it generates a plan built around one idea: get honest, relational product data first, because everything else depends on it. The output is deterministic (no LLM, no network, the same answers always produce the same plan), free, and MIT licensed.
 
-## What it produces
+## Try it
 
-From ten answers about a shop (what you make, how it varies, whether you cut material, how you sell,
-whether you keep stock, and so on) the engine generates:
+### In the browser
 
-- **A plan** (`generateBlueprint`) rendered as HTML or Markdown: the relational data model, the process and
-  SOPs, the build order, a self-hostable tooling list, and notes for whoever implements it.
-- **A starter repo** (`buildExport`): a tailored project you can hand to a coding agent, a real Postgres
-  `schema.sql`, a FastAPI skeleton with the cost engine and quote endpoint stubbed, `AGENTS.md`, `TASKS.md`,
-  per-folder context, and a compose file.
+The quickest way: [damiankao.com/blueprint](https://damiankao.com/blueprint) runs this same engine. Answer the questions, read the plan, download the starter repo as a zip.
 
-Both are tailored to the answers: a configurable metal-fab shop gets a different schema, build order, and
-scaffold than a catalog sign shop.
+### From the command line
 
-## Use it
+The repo ships a small CLI with no dependencies beyond Node built-ins. From a clone:
+
+```
+npm install        # also builds dist/, which the CLI imports
+node bin/operations-blueprint.mjs --list-options
+```
+
+You can also run it as `npx .` from the repo root. Once the package is published to npm (it is not yet), `npx operations-blueprint` will work from anywhere.
+
+Answer the ten questions with flags, an answers file, or a mix. Flags override the answers file, which overrides sensible defaults.
+
+```
+# Print a tailored plan (markdown) to stdout
+node bin/operations-blueprint.mjs --product metalfab --variation configurable --cuts yes
+
+# Start from an answers.json (same fields, cuts as true/false), override one answer
+node bin/operations-blueprint.mjs --answers answers.json --priority production
+
+# Write the full starter repo to a new or empty directory
+node bin/operations-blueprint.mjs --answers answers.json --out my-operation
+
+# HTML instead of markdown
+node bin/operations-blueprint.mjs --format html > plan.html
+```
+
+Flags: `--product`, `--variation`, `--cuts` (yes|no), `--state`, `--team`, `--priority`, `--install`, `--inventory`, `--sales`, `--orders`, `--answers <file>`, `--out <dir>`, `--format <md|html>`, `--list-options`, `--help`. Run with no arguments to see usage plus every question and its valid values. Bad values exit 1 and print the valid options. The CLI refuses to write into a non-empty `--out` directory, so it never overwrites your files. There are no interactive prompts yet; that is deliberately deferred.
+
+### As a library
+
+The package is not on npm yet, so use a clone: `npm install` builds `dist/`, and you can import from it (or `npm link` the package locally, in which case the import below works as written).
 
 ```ts
 import { generateBlueprint, renderBlueprintMarkdown, buildExport } from 'operations-blueprint';
@@ -50,29 +69,51 @@ for (const file of buildExport(answers)) {
 }
 ```
 
-See `src/blueprint-model.ts` for the full set of answer options (`PRODUCTS`, `VARIATIONS`, and the rest).
+The full set of answer options lives in [docs/answers.md](docs/answers.md), with what each answer changes in the output. `npm run example` writes a sample starter repo to `examples/output/` and prints the plan.
 
-## Try it
+## What building from it looks like
 
+![An operations report from the Northline Metalworks example: a quote priced by the cost engine, margins across quotes, and estimate versus actual hours](assets/report.png)
+
+This report comes from the worked example in [examples/northline-metalworks](examples/northline-metalworks): a fictional seven-person steel fabrication shop, run end to end. The engine generated its blueprint and starter repo, a coding agent built the first vertical slice from that export, and this is the output: every quote priced through one cost engine, and a welding overrun that the shop's spreadsheets could never have shown. All numbers are synthetic but internally consistent.
+
+## How it is put together
+
+- [docs/how-it-works.md](docs/how-it-works.md): the design in plain language: the typed schema model as the single source of truth, how the plan is composed and rendered, and how the starter repo is assembled.
+- [docs/answers.md](docs/answers.md): the ten questions, every option value and label, and exactly what each answer changes in the output.
+- [docs/build-with-an-agent.md](docs/build-with-an-agent.md): the workflow for handing an export to a coding agent, one vertical slice at a time.
+- [prompts/build-with-an-agent.md](prompts/build-with-an-agent.md): a ready-to-paste kickoff prompt for Claude Code or Cursor.
+
+The approach applies the Manufacturing Intelligence Framework, documented at [damiankao.com/framework](https://damiankao.com/framework). It does not replace established operations-engineering discipline (Lean, Six Sigma, continuous improvement); it supplies the measurement foundation those methods assume and a small shop rarely has.
+
+## Build it with an AI agent
+
+The exported starter repo is written to be handed to a coding agent. Open Claude Code or Cursor in the export and paste the prompt in [`prompts/build-with-an-agent.md`](prompts/build-with-an-agent.md); the longer walkthrough is in [`docs/build-with-an-agent.md`](docs/build-with-an-agent.md). This repo also ships two Claude Code skills distilled from the Northline example, both v0.1 (validated end to end on one archetype so far; a second archetype is the gate for v1):
+
+- [`.claude/skills/excel-to-schema`](.claude/skills/excel-to-schema/SKILL.md): ingest a shop's existing spreadsheets into the generated schema without losing a row.
+- [`.claude/skills/blueprint-vertical-slice`](.claude/skills/blueprint-vertical-slice/SKILL.md): build the first working slice from an export (cost engine first, one report, one hand-checked quote).
+
+## Example blueprints
+
+The [blueprints/](blueprints/) folder holds pre-generated plans and schemas for four invented shops (a custom cabinet shop, a catalog furniture maker, a configurable sign shop, and a minimal general job shop), so you can read real output without running anything. Regenerate them with `node scripts/build-blueprints.mjs`.
+
+For a deeper walkthrough, [examples/northline-metalworks](examples/northline-metalworks) is a full worked example: the shop's (synthetic) spreadsheets, the blueprint and starter repo the engine produced, a working vertical slice built from that export, the outputs, and the lessons that fed back into this tool. Everything there is invented for demonstration; nothing is from any real company.
+
+## Tests
+
+The suite uses the built-in Node test runner. There are no test dependencies.
+
+```bash
+npm ci
+npm test
 ```
-npm install
-npm run example      # writes a sample starter repo to examples/output/ and prints the plan
-```
 
-## Examples
+`npm test` rebuilds `dist/` first, then runs the suites in `test/`: determinism (same input, byte-identical output), schema tailoring (which answers add or remove which tables), foreign-key integrity across all 104,976 input combinations, export completeness, build ordering, rendering, docs freshness (every answer option appears in `docs/answers.md`), and gallery freshness (the committed `blueprints/` match what the engine generates today). CI runs the suite plus `npm run example` on Node 20 and 22.
 
-`examples/northline-metalworks/` is a full worked example: a fictional seven-person steel fabrication shop,
-run end to end. It contains the shop's (synthetic) spreadsheets, the blueprint and starter repo the engine
-produced for it, a working vertical slice built from that export, the outputs, and the lessons that fed
-back into this tool. Everything there is invented for demonstration; nothing is from any real company.
+## Contributing
 
-## Method
-
-This applies the Manufacturing Intelligence Framework, documented at
-[damiankao.com/framework](https://damiankao.com/framework). It does not replace established
-operations-engineering discipline (Lean, Six Sigma, continuous improvement); it supplies the measurement
-foundation those methods assume and a small shop rarely has.
+See [CONTRIBUTING.md](CONTRIBUTING.md) (setup, the derived-outputs and synthetic-data rules, scope) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Each source folder carries a CONTEXT.md with the invariants a change must preserve. The version history is in [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
-MIT. See `LICENSE`.
+MIT. See [LICENSE](LICENSE).
