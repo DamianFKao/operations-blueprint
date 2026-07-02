@@ -1,8 +1,8 @@
 /**
- * Generate Northline's blueprint + exported starter repo, straight from the site's own engine.
+ * Generate Northline's blueprint + exported starter repo, straight from this repo's engine.
  *
- * Bundles src/lib/blueprint/export/index.ts with esbuild (the same code that runs on the site),
- * runs buildExport() with Northline's ten answers, and writes:
+ * Bundles src/export/index.ts with esbuild (the same code that runs in the browser at
+ * damiankao.com/blueprint), runs buildExport() with Northline's ten answers, and writes:
  *   answers.json                 the recorded inputs
  *   blueprint.md                 the human-readable plan
  *   operations-system/           the tailored starter repo
@@ -16,7 +16,7 @@ import { pathToFileURL } from 'url';
 
 const OUT = import.meta.dirname;
 const repoRoot = resolve(OUT, '../../..');
-const entry = join(repoRoot, 'src/lib/blueprint/export/index.ts');
+const entry = join(repoRoot, 'src/export/index.ts');
 const bundle = join(repoRoot, 'node_modules/.cache/northline-export.mjs');
 
 // Northline Metalworks: the ten answers (see ../01-profile/PROFILE.md).

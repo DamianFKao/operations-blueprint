@@ -44,9 +44,9 @@ The slice runs on SQLite so the whole demo is one command; the export targets Po
 identical, so this stayed a note, not a fix.
 
 ## Files touched by this round
-- `src/lib/blueprint/blueprint-model.ts`: itemized-assembly note (configurable/custom), the backfill
+- `src/blueprint-model.ts`: itemized-assembly note (configurable/custom), the backfill
   build step (state != paper), the overhead-once and flag-do-not-drop guidance.
-- `src/lib/blueprint/export/skeleton.ts`: the same two engine notes in the `cost.py` stub.
+- `src/export/skeleton.ts`: the same two engine notes in the `cost.py` stub.
 - Northline's `../03-blueprint` export was regenerated, so it now carries all three improvements. Verified
   they are tailored: a paper/catalog shop gets neither the backfill step nor the assembly note.
 

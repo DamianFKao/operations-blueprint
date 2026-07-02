@@ -1,8 +1,8 @@
 # 03 · Blueprint + export (Northline)
 
-Northline's ten answers, run through the site's own blueprint engine.
+Northline's ten answers, run through this repo's engine.
 
-Regenerate (bundles `src/lib/blueprint/export` with esbuild and runs `buildExport`, exactly what the site does):
+Regenerate (bundles `src/export` with esbuild and runs `buildExport`, the same code that runs in the browser at [damiankao.com/blueprint](https://damiankao.com/blueprint)):
 
 ```
 node regenerate.mjs
