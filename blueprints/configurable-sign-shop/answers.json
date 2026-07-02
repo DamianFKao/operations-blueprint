@@ -1,0 +1,12 @@
+{
+  "product": "signage",
+  "variation": "configurable",
+  "cuts": false,
+  "state": "spreadsheets",
+  "team": "small",
+  "priority": "production",
+  "install": "none",
+  "inventory": "managed",
+  "salesChannel": "online",
+  "orderPattern": "runs"
+}

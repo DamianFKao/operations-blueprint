@@ -1,0 +1,12 @@
+{
+  "product": "general",
+  "variation": "catalog",
+  "cuts": false,
+  "state": "spreadsheets",
+  "team": "small",
+  "priority": "catalog",
+  "install": "none",
+  "inventory": "perjob",
+  "salesChannel": "direct",
+  "orderPattern": "oneoffs"
+}

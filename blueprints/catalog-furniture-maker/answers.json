@@ -1,0 +1,12 @@
+{
+  "product": "furniture",
+  "variation": "catalog",
+  "cuts": false,
+  "state": "software",
+  "team": "larger",
+  "priority": "cost",
+  "install": "delivery",
+  "inventory": "stock",
+  "salesChannel": "dealers",
+  "orderPattern": "repeat"
+}

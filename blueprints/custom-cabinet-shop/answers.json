@@ -1,0 +1,12 @@
+{
+  "product": "cabinets",
+  "variation": "custom",
+  "cuts": true,
+  "state": "paper",
+  "team": "solo",
+  "priority": "quoting",
+  "install": "install",
+  "inventory": "perjob",
+  "salesChannel": "direct",
+  "orderPattern": "oneoffs"
+}
