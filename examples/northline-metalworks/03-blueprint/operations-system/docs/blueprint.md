@@ -115,8 +115,8 @@ The job is three moves: structure the data (sections 1 to 3), build the systems 
 
 Work folder by folder. Give each part of the system (the engine, the quote service, the document generator, the knowledge base) its own directory with a short context file, its own memory of decisions made, and the skills it repeats, so a fresh agent dropped in is immediately useful. You can run several agents at once across folders; you are the orchestrator, and the work is only ever as coordinated as you make it.
 
-- [Build the Expertise Into Each Folder](/writing/build-the-expertise-into-each-folder)
-- [Agentic Practice](/practice)
+- [Build the Expertise Into Each Folder](https://damiankao.com/writing/build-the-expertise-into-each-folder)
+- [Agentic Practice](https://damiankao.com/practice)
 
 ### Read and combine the data into answers
 

@@ -422,8 +422,8 @@ function integrator(i: BlueprintInput): Section {
       {
         kind: 'links',
         items: [
-          { label: 'Build the Expertise Into Each Folder', href: '/writing/build-the-expertise-into-each-folder', external: false },
-          { label: 'Agentic Practice', href: '/practice', external: false },
+          { label: 'Build the Expertise Into Each Folder', href: 'https://damiankao.com/writing/build-the-expertise-into-each-folder', external: false },
+          { label: 'Agentic Practice', href: 'https://damiankao.com/practice', external: false },
         ],
       },
       { kind: 'subhead', text: 'Read and combine the data into answers' },
