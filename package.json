@@ -24,7 +24,7 @@
     "build": "esbuild src/index.ts --bundle --format=esm --platform=node --outfile=dist/index.js && tsc --emitDeclarationOnly",
     "prepare": "npm run build",
     "pretest": "npm run build",
-    "test": "node --test \"test/*.test.mjs\"",
+    "test": "node --test test/*.test.mjs",
     "example": "node examples/generate.mjs",
     "blueprints": "node scripts/build-blueprints.mjs"
   },
