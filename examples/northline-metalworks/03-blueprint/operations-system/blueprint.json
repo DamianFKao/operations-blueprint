@@ -1,0 +1,40 @@
+{
+  "generatedBy": "Operations Blueprint (damiankao.com/blueprint)",
+  "input": {
+    "product": "metalfab",
+    "variation": "configurable",
+    "cuts": true,
+    "state": "spreadsheets",
+    "team": "small",
+    "priority": "quoting",
+    "install": "delivery",
+    "inventory": "stock",
+    "salesChannel": "direct",
+    "orderPattern": "repeat"
+  },
+  "tables": [
+    "product_templates",
+    "product_variants",
+    "materials",
+    "bom_lines",
+    "labor_ops",
+    "stock_items",
+    "cut_parts",
+    "vendors",
+    "inventory",
+    "clients",
+    "projects",
+    "quotes",
+    "quote_lines",
+    "deliveries",
+    "production_actuals"
+  ],
+  "sections": [
+    "1. Foundation: the relational data model",
+    "2. Process, SOPs, and the feedback loop",
+    "3. Files, data, and the shape of the system",
+    "4. Build action items, ordered for your priority (accurate quoting)",
+    "5. Tooling: a self-hostable stack",
+    "6. The AI integrator: building and operating it"
+  ]
+}

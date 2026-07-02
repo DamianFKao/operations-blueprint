@@ -1,0 +1,37 @@
+
+INGESTED (six spreadsheets -> one relational source of truth)
+------------------------------------------------------------------------
+  materials: 11,  labor_ops: 7,  clients: 8,  quotes: 3,  quote_materials: 18,  quote_labor: 18,  production_actuals: 13
+
+QUOTE Q-2025-018  ·  Boltless shelving unit 48x18x72, 5 shelf, qty 10
+------------------------------------------------------------------------
+  Material    $1,974.00
+  Labor       $530.00
+  Overhead    $538.00
+  Subtotal    $3,042.00
+  Markup      35%
+  Sell        $4,106.70   (recorded: $4,106.70)
+
+MARGINS  (every quote priced through the one engine)
+------------------------------------------------------------------------
+  Quote          Est cost       Sell     Margin  Margin %   flag
+  Q-2025-018    $3,042.00  $4,106.70  $1,064.70     25.9%   
+  Q-2025-023    $2,193.72  $2,961.52    $767.80     25.9%   
+  Q-2025-031      $581.98    $750.00    $168.02     22.4%   hand-set sell, -35.67 vs engine
+
+VARIANCE  ·  Q-2025-018 (estimate vs actual, from the production log)
+------------------------------------------------------------------------
+  Station           Est hrs  Act hrs    Delta
+  Saw / Cut             4.0      4.2      0.2
+  Brake / Form          2.0      2.0      0.0
+  Weld                  6.0      8.0      2.0  <-- overrun
+  Grind / Finish        3.0      3.5      0.5
+  Powder Coat           3.0      3.0      0.0
+  Assembly              5.0      5.2      0.2
+
+  material   est $1,974.00   actual $2,075.00
+  cost       est $3,042.00   actual $3,294.20   (delta $252.20)
+  margin     est $1,064.70   actual $812.50
+
+  Read: the quote looked fine; welding ran over, so the real margin was
+  $812.50, not $1,064.70. Nobody could see that before.

@@ -1,0 +1,12 @@
+{
+  "product": "metalfab",
+  "variation": "configurable",
+  "cuts": true,
+  "state": "spreadsheets",
+  "team": "small",
+  "priority": "quoting",
+  "install": "delivery",
+  "inventory": "stock",
+  "salesChannel": "direct",
+  "orderPattern": "repeat"
+}

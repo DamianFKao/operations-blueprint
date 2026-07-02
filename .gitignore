@@ -1,0 +1,10 @@
+node_modules/
+dist/
+
+# example run output
+examples/output/
+
+# python example artifacts
+examples/**/.venv/
+examples/**/*.db
+examples/**/__pycache__/
