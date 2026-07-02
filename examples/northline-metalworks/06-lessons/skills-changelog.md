@@ -25,3 +25,11 @@ Proven on: Northline (cost → quote → variance), math verified against the so
 ## Next
 When sandbox #2 (a different shop archetype) runs, confirm both procedures hold, then promote them to
 `.claude/skills/`.
+
+## 2026-07-02 · Promoted to `.claude/skills/` at v0.1
+Both procedures are now real skills in this repo: `.claude/skills/excel-to-schema/` and
+`.claude/skills/blueprint-vertical-slice/`. That is one notch earlier than the bar above, on purpose:
+a single end-to-end validation gave them enough shape to be worth handing to an agent, and a skill
+file in the repo gets exercised in a way a note in a sandbox does not. The original bar did not move,
+it just renamed: a second, different shop archetype confirming both procedures is now the explicit
+gate for calling them v1. Until then, each carries a v0.1 maturity note saying so.
