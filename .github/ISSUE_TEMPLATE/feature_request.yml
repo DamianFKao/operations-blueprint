@@ -1,0 +1,28 @@
+name: Feature request
+description: Suggest a new answer option, better tailoring, or an improvement to the plan or export.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A quick scope note before you write: in scope is custom and made-to-order manufacturing. Out of scope for now: paid features, LLM calls or any network dependency inside the engine, and service businesses. See CONTRIBUTING.md.
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What kind of shop or situation does the current output not serve well, and how does it show up?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you would change
+      description: The new option, table, build step, or export file you have in mind. A rough sketch is fine.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered
+    validations:
+      required: false

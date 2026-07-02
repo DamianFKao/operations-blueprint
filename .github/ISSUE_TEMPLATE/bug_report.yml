@@ -1,0 +1,49 @@
+name: Bug report
+description: The engine produced wrong or broken output for a set of answers.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. The engine is deterministic, so with your exact answers we can reproduce any output exactly. That makes the "answers used" field below the most important one.
+  - type: textarea
+    id: answers
+    attributes:
+      label: The ten answers used
+      description: The BlueprintInput that produced the problem. If you have an export, paste the `input` object from its `blueprint.json`. Otherwise list the ten values (product, variation, cuts, state, team, priority, install, inventory, salesChannel, orderPattern).
+      placeholder: |
+        {
+          "product": "metalfab",
+          "variation": "configurable",
+          "cuts": true,
+          "state": "spreadsheets",
+          "team": "small",
+          "priority": "quoting",
+          "install": "delivery",
+          "inventory": "stock",
+          "salesChannel": "direct",
+          "orderPattern": "repeat"
+        }
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: what-went-wrong
+    attributes:
+      label: What the output got wrong
+      description: What the engine produced, and where. Quote the wrong table, build step, prose, or exported file (with its path) if you can.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected instead
+    validations:
+      required: true
+  - type: input
+    id: where
+    attributes:
+      label: Where you ran it
+      description: The browser tool at damiankao.com/blueprint, this package in Node, or npm run example (and the package version or commit, if you know it).
+    validations:
+      required: false
