@@ -4,6 +4,15 @@ All notable changes to the Operations Blueprint are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versions before 0.5.0 shipped through the browser tool at [damiankao.com/blueprint](https://damiankao.com/blueprint), which runs this same engine; they are recorded here so the history stays in one place.
 
+## [0.6.0] - 2026-07-02
+
+### Added
+
+- The Blueprint Map: a hand-drawn overview of the generated plan, drawn from the same model as the text so the two cannot disagree. It appears above the plan on the site, ships as `docs/map.svg` in every export, is committed as `map.svg` for each gallery shop in `blueprints/`, and markdown plans embed the same map as a Mermaid diagram.
+- Section ids on the rendered HTML sections (`id="bp-<section id>"`), so the map and anything else can deep-link into the plan.
+
+The map is deterministic like everything else here: every stroke is seeded from its own shape key (no randomness, no clock), so the same answers always draw the same wobble, and toggling one answer never redraws the parts that did not change.
+
 ## [0.5.0] - 2026-07-02
 
 ### Added

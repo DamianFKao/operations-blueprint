@@ -1,6 +1,6 @@
 {
   "name": "operations-blueprint",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Turn a small custom manufacturer's answers into a tailored, foundation-first operations plan and a runnable starter repo. Deterministic, no LLM.",
   "license": "MIT",
   "author": "Damian Kao",
@@ -10,7 +10,13 @@
   "bin": {
     "operations-blueprint": "bin/operations-blueprint.mjs"
   },
-  "files": ["dist", "src", "bin", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "src",
+    "bin",
+    "README.md",
+    "LICENSE"
+  ],
   "engines": {
     "node": ">=20.11"
   },
@@ -39,6 +45,7 @@
     "scaffolding"
   ],
   "devDependencies": {
+    "@fontsource/architects-daughter": "^5.2.7",
     "esbuild": "^0.24.0",
     "typescript": "^5.6.0"
   }

@@ -59,17 +59,28 @@ One structural detail matters more than it looks: the `build` section keeps the 
 
 Because both renderers switch over the closed `Block` union, adding a new block kind means updating both, and the compiler tells you so.
 
+## One model, three renderers: the Blueprint Map
+
+The map works the same way the schema does: one model, rendered more than once.
+
+- `buildMapModel(input)` in `src/map.ts` derives the map's nodes and edges from the same answers that drive `buildSchema` and the written plan: the always-present data spine (materials through clients), the modules the shop's answers switch on, and the estimate versus actual feedback loop. Every node carries the real table names it stands for and the id of the plan section it links to.
+- `renderBlueprintMap(input, opts)` draws that model as a hand-drawn SVG, using the small sketch renderer in `src/sketch-lite.ts`. Every shape is seeded from its own string key (no `Math.random`, no dates), so the same input always produces the same wobble, byte for byte, and toggling one answer never redraws the parts that did not change. Two palettes: `'site'` takes its colors from the page, `'self-contained'` embeds a small `<style>` (light palette, dark mode override) so the file reads anywhere.
+- `renderBlueprintMermaid(input)` emits the same model as a fenced Mermaid flowchart, which GitHub and most markdown viewers render as a diagram inside the exported plan.
+
+Because all three render from one `buildMapModel`, the map cannot disagree with the plan: if an answer adds a table, the schema, the prose, the SVG, and the Mermaid diagram all pick it up from the same source.
+
 ## How buildExport assembles the starter repo
 
 `buildExport(input)` in `src/export/index.ts` returns a flat, path-sorted list of `{ path, content }` files. Nothing touches disk; callers (the browser zip, the CLI at `bin/operations-blueprint.mjs`, `examples/generate.mjs`) decide where the files go. The pieces:
 
 - `db/schema.sql`: the DDL, rendered from the same `buildSchema` tables as the plan.
 - `AGENTS.md` and `TASKS.md` (`src/export/agents.ts`): the agent's operating manual and build checklist. Both derive from the generated `Blueprint` itself: they find the section with id `'build'`, take its `steps` block, and render those steps as a numbered build order and a checkbox list. The plan and the checklist cannot drift apart because they are the same data.
-- `docs/blueprint.md`: the full plan, via `renderBlueprintMarkdown`.
+- `docs/blueprint.md`: the full plan, via `renderBlueprintMarkdown`, with the Mermaid map embedded after the intro.
+- `docs/map.svg`: the Blueprint Map as a self-contained SVG (see above).
 - The FastAPI skeleton (`src/export/skeleton.ts`): a real, runnable shell, not a finished app. `api/main.py`, `api/db.py`, a Dockerfile, and per-folder `CONTEXT.md` files, plus feature routers only for the features your answers call for. The two keystone pieces, the cost engine (`api/engine/cost.py`) and the quote endpoint (`api/routes/quotes.py`), are deliberately stubbed: they carry precise docstrings describing the joins and rules, then raise `NotImplementedError`. That is intentional. The stubs are the specification the agent (or you) implements against `db/schema.sql`, and the plan is explicit that pricing must exist in exactly one place.
 - Project files (`src/export/project.ts`): a README, a `docker-compose.yml` that starts Postgres (loading `db/schema.sql` on first boot) and the API, `.env.example`, `.gitignore`, and `blueprint.json`, a small manifest recording the answers and the tables so any export can be traced back to its input.
 
-For the default answers this comes to 24 files. A different set of answers produces a different schema, build order, and set of routers.
+For the default answers this comes to 25 files. A different set of answers produces a different schema, build order, and set of routers.
 
 ## Where to go next
 

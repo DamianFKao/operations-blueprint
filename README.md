@@ -9,7 +9,7 @@ Turn ten answers about a small custom or made-to-order manufacturing operation i
 
 You do not need to install anything to get value out of this repo.
 
-1. **Read a plan for a shop like yours (minutes 0 to 3).** [blueprints/](blueprints/) holds pre-generated blueprints for four invented shops: a custom cabinet shop, a catalog furniture maker, a configurable sign shop, and a minimal general job shop. Pick the closest one and read its `plan.md` and `schema.sql`.
+1. **Read a plan for a shop like yours (minutes 0 to 3).** [blueprints/](blueprints/) holds pre-generated blueprints for four invented shops: a custom cabinet shop, a catalog furniture maker, a configurable sign shop, and a minimal general job shop. Each shop now has a hand-drawn map of its system alongside the plan. Pick the closest one, look at its map, and read its `plan.md` and `schema.sql`.
 2. **Generate your own (minutes 3 to 8).** Answer the ten questions at [damiankao.com/blueprint](https://damiankao.com/blueprint) (runs in your browser, nothing is sent anywhere), or clone this repo and use the CLI below. Either way you get a plan tailored to your answers and a starter repo you can download or write to disk.
 3. **Hand it to a coding agent (the rest).** Open the exported folder in Claude Code or Cursor and paste [prompts/build-with-an-agent.md](prompts/build-with-an-agent.md); the agent starts on the cost engine while you watch. [examples/northline-metalworks](examples/northline-metalworks) shows where that path leads: a working slice, built from an export like yours, that surfaced two money leaks hiding in a shop's own spreadsheets.
 
@@ -79,11 +79,17 @@ for (const file of buildExport(answers)) {
 
 The full set of answer options lives in [docs/answers.md](docs/answers.md), with what each answer changes in the output. `npm run example` writes a sample starter repo to `examples/output/` and prints the plan.
 
+Every export (CLI, library, or browser) includes `docs/map.svg`, a hand-drawn map of the plan, and the markdown plan embeds the same map as a Mermaid diagram.
+
 ## What building from it looks like
 
 ![An operations report from the Northline Metalworks example: a quote priced by the cost engine, margins across quotes, and estimate versus actual hours](assets/report.png)
 
 This report comes from the worked example in [examples/northline-metalworks](examples/northline-metalworks): a fictional seven-person steel fabrication shop, run end to end. The engine generated its blueprint and starter repo, a coding agent built the first vertical slice from that export, and this is the output: every quote priced through one cost engine, and a welding overrun that the shop's spreadsheets could never have shown. All numbers are synthetic but internally consistent.
+
+![The Blueprint Map from the Northline export: the data spine from materials to clients, the modules Northline's answers switched on, and the estimate versus actual feedback loop](examples/northline-metalworks/03-blueprint/operations-system/docs/map.svg)
+
+The map above ships in the same export (`docs/map.svg`): the plan's data spine from materials to clients, the modules Northline's answers switched on, and the estimate versus actual feedback loop that the report's last column closes.
 
 ## How it is put together
 
