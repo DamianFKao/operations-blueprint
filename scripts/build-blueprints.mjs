@@ -5,6 +5,7 @@
  *   blueprints/<slug>/answers.json   the ten answers that define the shop
  *   blueprints/<slug>/plan.md        the generated operations plan
  *   blueprints/<slug>/schema.sql     the database schema from the starter repo export
+ *   blueprints/<slug>/map.svg        the Blueprint Map (self-contained, font embedded)
  *
  * Output is deterministic: rerunning produces byte-identical files.
  * Run:  node scripts/build-blueprints.mjs   (after: npm install)
@@ -12,6 +13,7 @@
 import { existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { embedFont } from './lib/embed-font.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const dist = join(root, 'dist', 'index.js');
@@ -19,9 +21,8 @@ if (!existsSync(dist)) {
   console.error('dist/index.js not found: run npm install first.');
   process.exit(1);
 }
-const { generateBlueprint, renderBlueprintMarkdown, buildExport } = await import(
-  pathToFileURL(dist).href
-);
+const { generateBlueprint, renderBlueprintMarkdown, renderBlueprintMap, buildExport } =
+  await import(pathToFileURL(dist).href);
 
 const SHOPS = [
   {
@@ -106,5 +107,9 @@ for (const shop of SHOPS) {
   writeFileSync(join(dir, 'answers.json'), JSON.stringify(shop.answers, null, 2) + '\n');
   writeFileSync(join(dir, 'plan.md'), plan);
   writeFileSync(join(dir, 'schema.sql'), schema.content);
+  writeFileSync(
+    join(dir, 'map.svg'),
+    embedFont(renderBlueprintMap(shop.answers, { palette: 'self-contained' })),
+  );
   console.log(`${shop.slug}: ${shop.title}`);
 }

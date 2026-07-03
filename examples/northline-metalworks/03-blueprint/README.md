@@ -12,7 +12,7 @@ node regenerate.mjs
 | --- | --- |
 | `answers.json` | the ten recorded inputs (see `../01-profile/PROFILE.md`) |
 | `blueprint.md` | the human-readable plan |
-| `operations-system/` | the tailored starter repo the export produces (24 files) |
+| `operations-system/` | the tailored starter repo the export produces (25 files) |
 
 The schema this produced is tailored to Northline: `product_templates` + `product_variants` (configurable),
 `stock_items` + `cut_parts` (they cut to size), `inventory` (they keep stock), `deliveries` (they deliver), and
