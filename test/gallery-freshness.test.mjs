@@ -7,7 +7,15 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { generateBlueprint, renderBlueprintMarkdown, buildExport } from '../dist/index.js';
+import {
+  generateBlueprint,
+  renderBlueprintMarkdown,
+  renderBlueprintMap,
+  buildExport,
+} from '../dist/index.js';
+// The same helper the build script uses, so the regenerated map.svg carries the
+// same embedded font bytes as the committed file.
+import { embedFont } from '../scripts/lib/embed-font.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const blueprintsDir = join(root, 'blueprints');
@@ -29,8 +37,8 @@ test('the gallery holds the four expected shops', () => {
 for (const slug of slugs) {
   const dir = join(blueprintsDir, slug);
 
-  test(`${slug}: plan.md and schema.sql match the engine byte for byte`, () => {
-    for (const name of ['answers.json', 'plan.md', 'schema.sql']) {
+  test(`${slug}: plan.md, schema.sql, and map.svg match the engine byte for byte`, () => {
+    for (const name of ['answers.json', 'plan.md', 'schema.sql', 'map.svg']) {
       assert.ok(existsSync(join(dir, name)), `${slug}/${name} is missing`);
     }
 
@@ -49,6 +57,13 @@ for (const slug of slugs) {
     assert.ok(
       committedSchema.equals(Buffer.from(schemaFile.content)),
       `${slug}/schema.sql is stale: regenerate with \`node scripts/build-blueprints.mjs\``
+    );
+
+    const expectedMap = embedFont(renderBlueprintMap(answers, { palette: 'self-contained' }));
+    const committedMap = readFileSync(join(dir, 'map.svg'));
+    assert.ok(
+      committedMap.equals(Buffer.from(expectedMap)),
+      `${slug}/map.svg is stale: regenerate with \`node scripts/build-blueprints.mjs\``
     );
   });
 }

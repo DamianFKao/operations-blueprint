@@ -1,7 +1,8 @@
 // Export completeness: for a representative set of inputs, the exported starter
 // repo must contain AGENTS.md and TASKS.md with a real build order, a db/schema.sql
-// that creates every table the schema builder returns, and a non-empty
-// docs/blueprint.md. The build-order checks guard a real silent-failure mode:
+// that creates every table the schema builder returns, a non-empty docs/blueprint.md
+// that embeds the mermaid Blueprint Map, and a non-empty docs/map.svg.
+// The build-order checks guard a real silent-failure mode:
 // src/export/agents.ts returns an empty step list if the blueprint's 'build'
 // section (or its first steps block) disappears, which would export files that
 // look fine but tell the agent to build nothing.
@@ -127,9 +128,15 @@ for (const [name, input] of CASES) {
       assert.ok(sql.includes(`CREATE TABLE ${t.name} (`), `db/schema.sql missing CREATE TABLE ${t.name}`);
     }
 
-    // docs/blueprint.md: exists and is non-empty.
+    // docs/blueprint.md: exists, non-empty, and embeds the mermaid Blueprint Map.
     const doc = byPath.get('docs/blueprint.md');
     assert.ok(doc, 'docs/blueprint.md missing from export');
     assert.ok(doc.trim().length > 0, 'docs/blueprint.md is empty');
+    assert.ok(doc.includes('```mermaid'), 'docs/blueprint.md is missing the mermaid Blueprint Map');
+
+    // docs/map.svg: the self-contained Blueprint Map, present and non-empty.
+    const map = byPath.get('docs/map.svg');
+    assert.ok(map, 'docs/map.svg missing from export');
+    assert.ok(map.trim().length > 0, 'docs/map.svg is empty');
   });
 }

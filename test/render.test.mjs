@@ -1,10 +1,19 @@
 // Rendering: HTML output escapes user-visible prose, markdown escapes table
 // cells that would break the table, internal links (external: false) do not get
 // target="_blank" while default links do, and every link the engine emits is an
-// absolute https URL (the export is read outside any site context).
+// absolute https URL (the export is read outside any site context). Since the
+// Blueprint Map landed, each rendered section also carries an id="bp-<id>"
+// anchor for the map's deep links, and the markdown embeds the mermaid map
+// after the intro only when opts.map is passed.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { renderBlueprintHTML, renderBlueprintMarkdown, generateBlueprint, DEFAULT_INPUT } from '../dist/index.js';
+import {
+  renderBlueprintHTML,
+  renderBlueprintMarkdown,
+  renderBlueprintMermaid,
+  generateBlueprint,
+  DEFAULT_INPUT,
+} from '../dist/index.js';
 
 // A hand-crafted Blueprint that exercises the escaping and link paths directly.
 const CRAFTED = {
@@ -53,6 +62,38 @@ test('links with external: false lack target="_blank"; default links have it', (
     html.includes('<a href="https://example.com/default" target="_blank" rel="noopener">default link</a>'),
     'default link should open in a new tab with rel="noopener"'
   );
+});
+
+test('every rendered section carries its id="bp-<id>" anchor for the map', () => {
+  const bp = generateBlueprint(DEFAULT_INPUT);
+  const ids = bp.sections.map((s) => s.id);
+  assert.deepEqual(
+    ids,
+    ['foundation', 'process', 'files', 'build', 'tooling', 'integrator'],
+    'the six blueprint section ids changed; the map deep-links depend on them'
+  );
+  const html = renderBlueprintHTML(bp);
+  for (const id of ids) {
+    assert.ok(
+      html.includes(`<section class="bp-section" id="bp-${id}">`),
+      `section "${id}" is missing its id="bp-${id}" anchor`
+    );
+  }
+});
+
+test('markdown embeds the mermaid map only when passed, once, before the first section', () => {
+  const bp = generateBlueprint(DEFAULT_INPUT);
+
+  const plain = renderBlueprintMarkdown(bp);
+  assert.ok(!plain.includes('```mermaid'), 'a mermaid block leaked into markdown without opts.map');
+
+  const withMap = renderBlueprintMarkdown(bp, { map: renderBlueprintMermaid(DEFAULT_INPUT) });
+  const fences = withMap.match(/```mermaid/g) ?? [];
+  assert.equal(fences.length, 1, 'expected exactly one mermaid fence');
+  const mapAt = withMap.indexOf('```mermaid');
+  const firstHeading = withMap.indexOf('\n## ');
+  assert.ok(firstHeading > -1, 'markdown has no section headings');
+  assert.ok(mapAt < firstHeading, 'the mermaid block should sit before the first "## " section heading');
 });
 
 // The same gallery inputs the export tests use.
