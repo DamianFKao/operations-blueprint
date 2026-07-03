@@ -33,3 +33,12 @@ export {
 export { buildSchema, type SchemaTable, type Column } from './schema-model';
 export { renderBlueprintHTML, renderBlueprintMarkdown } from './render';
 export { buildExport, type ExportFile } from './export';
+export {
+  buildMapModel,
+  renderBlueprintMap,
+  renderBlueprintMermaid,
+  type MapModel,
+  type MapNode,
+  type MapEdge,
+  type MapRenderOptions,
+} from './map';

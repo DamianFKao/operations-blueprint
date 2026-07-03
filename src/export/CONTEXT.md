@@ -18,6 +18,8 @@ Turns a `BlueprintInput` into the starter repo: a flat, path-sorted list of `{ p
 - The cost engine (`api/engine/cost.py`) and quote endpoint (`api/routes/quotes.py`) stay deliberately stubbed: precise docstrings plus `NotImplementedError`. They are the specification the agent implements. Do not "helpfully" fill them in.
 - Conditional pieces must agree with the schema: a feature router only ships when its tables ship (for example the inventory router only when `inventory !== 'perjob'` adds the `inventory` table). If you add a conditional table, check `features()` in `skeleton.ts` and the docs rows in `blueprint-model.ts`.
 - `buildExport` sorts by path; tests and the zip rely on a stable file order.
+- `docs/map.svg` renders with the `'self-contained'` palette and no font bytes: the SVG only declares a cursive font stack, so exports stay small and deterministic in the browser. Font embedding lives exclusively in `scripts/lib/embed-font.mjs`, which the gallery build applies to committed files; never add it here.
+- `docs/blueprint.md` embeds the Mermaid map (`renderBlueprintMermaid`) after the intro. It renders from the same `buildMapModel` as the SVG, so the two cannot drift.
 - Exported content carries no real company, client, vendor, or cost data, and no reference to any private repo.
 
 ## Landmines

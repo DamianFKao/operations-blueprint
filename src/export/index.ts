@@ -8,6 +8,7 @@
 import { PRODUCTS, generateBlueprint, type BlueprintInput } from '../blueprint-model';
 import { buildSchema } from '../schema-model';
 import { renderBlueprintMarkdown } from '../render';
+import { renderBlueprintMap, renderBlueprintMermaid } from '../map';
 import { schemaSql } from './sql';
 import { skeletonFiles, type ExportFile } from './skeleton';
 import { agentsMd, tasksMd } from './agents';
@@ -24,7 +25,8 @@ export function buildExport(i: BlueprintInput): ExportFile[] {
     { path: 'db/schema.sql', content: schemaSql(tables) },
     { path: 'AGENTS.md', content: agentsMd(bp) },
     { path: 'TASKS.md', content: tasksMd(bp) },
-    { path: 'docs/blueprint.md', content: renderBlueprintMarkdown(bp) },
+    { path: 'docs/blueprint.md', content: renderBlueprintMarkdown(bp, { map: renderBlueprintMermaid(i) }) },
+    { path: 'docs/map.svg', content: renderBlueprintMap(i, { palette: 'self-contained' }) },
     ...skeletonFiles(i),
     ...projectFiles(i, tables, bp),
   ];

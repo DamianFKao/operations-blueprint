@@ -53,8 +53,9 @@ export function renderBlueprintHTML(bp: Blueprint): string {
     `<p class="bp-intro">${esc(bp.intro)}</p>` +
     bp.sections
       .map(
+        // id="bp-<section id>" lets the map (and anything else) deep-link a section.
         (s) =>
-          `<section class="bp-section"><h3 class="bp-h">${esc(s.title)}</h3>${s.blocks
+          `<section class="bp-section" id="bp-${s.id}"><h3 class="bp-h">${esc(s.title)}</h3>${s.blocks
             .map(renderBlock)
             .join('')}</section>`
       )
@@ -89,9 +90,14 @@ function blockToMarkdown(b: Block): string[] {
   }
 }
 
-/** Same structured Blueprint, rendered as a portable markdown document (for copy/paste or an agent). */
-export function renderBlueprintMarkdown(bp: Blueprint): string {
+/**
+ * Same structured Blueprint, rendered as a portable markdown document (for copy/paste or an agent).
+ * Pass opts.map (a fenced Mermaid block from renderBlueprintMermaid) to include the Blueprint Map
+ * right after the intro; GitHub and most markdown viewers render it as a diagram.
+ */
+export function renderBlueprintMarkdown(bp: Blueprint, opts: { map?: string } = {}): string {
   const lines: string[] = ['# Operations Blueprint', '', bp.intro, ''];
+  if (opts.map) lines.push(opts.map, '');
   for (const s of bp.sections) {
     lines.push(`## ${s.title}`, '');
     for (const b of s.blocks) lines.push(...blockToMarkdown(b));
