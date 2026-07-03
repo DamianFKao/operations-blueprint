@@ -2,6 +2,28 @@
 
 A foundation-first plan for a cabinets / casework operation. It rests on one idea: once you decompose your cabinet into honest, relational data, the things above it (pricing, quoting, scheduling, sales) become outputs of that data rather than work you do by hand. The foundation and data sections are for you, the owner; the build, tooling, and integrator sections are for whoever implements it, whether that is you, a team member, or an AI agent you direct. Build it in the order below; each layer assumes the one before it is solid.
 
+```mermaid
+flowchart LR
+  materials["Materials and labor"]
+  recipes["Recipes"]
+  product["Per-job specs"]
+  quotes["Quotes"]
+  jobs["Jobs"]
+  clients["Clients"]
+  actuals["Shop-floor actuals"]
+  cutting["Sheets and cutting"]
+  delivery["Deliveries and installs"]
+  materials --> recipes
+  recipes --> product
+  product --> quotes
+  quotes --> jobs
+  jobs --> clients
+  jobs --> actuals
+  actuals -. estimate vs actual .-> materials
+  cutting --- materials
+  delivery --- jobs
+```
+
 ## 1. Foundation: the relational data model
 
 Start here, because nothing above this layer holds if this layer is shaky. You are starting clean, which is an advantage: you can model the data correctly the first time, with no bad structure to unwind.

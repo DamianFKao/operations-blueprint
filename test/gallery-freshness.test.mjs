@@ -10,6 +10,7 @@ import { join, resolve } from 'node:path';
 import {
   generateBlueprint,
   renderBlueprintMarkdown,
+  renderBlueprintMermaid,
   renderBlueprintMap,
   buildExport,
 } from '../dist/index.js';
@@ -44,7 +45,7 @@ for (const slug of slugs) {
 
     const answers = JSON.parse(readFileSync(join(dir, 'answers.json'), 'utf8'));
 
-    const expectedPlan = renderBlueprintMarkdown(generateBlueprint(answers));
+    const expectedPlan = renderBlueprintMarkdown(generateBlueprint(answers), { map: renderBlueprintMermaid(answers) });
     const committedPlan = readFileSync(join(dir, 'plan.md'));
     assert.ok(
       committedPlan.equals(Buffer.from(expectedPlan)),

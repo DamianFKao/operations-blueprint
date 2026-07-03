@@ -2,6 +2,30 @@
 
 A foundation-first plan for a furniture / millwork operation. It rests on one idea: once you decompose your piece into honest, relational data, the things above it (pricing, quoting, scheduling, sales) become outputs of that data rather than work you do by hand. The foundation and data sections are for you, the owner; the build, tooling, and integrator sections are for whoever implements it, whether that is you, a team member, or an AI agent you direct. Build it in the order below; each layer assumes the one before it is solid.
 
+```mermaid
+flowchart LR
+  materials["Materials and labor"]
+  recipes["Recipes"]
+  product["Product catalog"]
+  quotes["Quotes"]
+  jobs["Jobs"]
+  clients["Clients"]
+  actuals["Shop-floor actuals"]
+  inventory["Inventory"]
+  dealers["Dealer pricing"]
+  delivery["Deliveries"]
+  materials --> recipes
+  recipes --> product
+  product --> quotes
+  quotes --> jobs
+  jobs --> clients
+  jobs --> actuals
+  actuals -. estimate vs actual .-> materials
+  inventory --- materials
+  dealers --- quotes
+  delivery --- jobs
+```
+
 ## 1. Foundation: the relational data model
 
 Start here, because nothing above this layer holds if this layer is shaky. You already run some software. The job is to make one relational source of truth and let every surface derive from it, rather than syncing tools that each hold a partial copy.

@@ -21,7 +21,7 @@ if (!existsSync(dist)) {
   console.error('dist/index.js not found: run npm install first.');
   process.exit(1);
 }
-const { generateBlueprint, renderBlueprintMarkdown, renderBlueprintMap, buildExport } =
+const { generateBlueprint, renderBlueprintMarkdown, renderBlueprintMap, renderBlueprintMermaid, buildExport } =
   await import(pathToFileURL(dist).href);
 
 const SHOPS = [
@@ -97,7 +97,7 @@ for (const shop of SHOPS) {
   rmSync(dir, { recursive: true, force: true });
   mkdirSync(dir, { recursive: true });
 
-  const plan = renderBlueprintMarkdown(generateBlueprint(shop.answers));
+  const plan = renderBlueprintMarkdown(generateBlueprint(shop.answers), { map: renderBlueprintMermaid(shop.answers) });
   const schema = buildExport(shop.answers).find((f) => f.path === 'db/schema.sql');
   if (!schema) {
     console.error(`no db/schema.sql in the export for ${shop.slug}`);

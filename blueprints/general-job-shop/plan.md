@@ -2,6 +2,24 @@
 
 A foundation-first plan for a custom / made-to-order products operation. It rests on one idea: once you decompose your product into honest, relational data, the things above it (pricing, quoting, scheduling, sales) become outputs of that data rather than work you do by hand. The foundation and data sections are for you, the owner; the build, tooling, and integrator sections are for whoever implements it, whether that is you, a team member, or an AI agent you direct. Build it in the order below; each layer assumes the one before it is solid.
 
+```mermaid
+flowchart LR
+  materials["Materials and labor"]
+  recipes["Recipes"]
+  product["Product catalog"]
+  quotes["Quotes"]
+  jobs["Jobs"]
+  clients["Clients"]
+  actuals["Shop-floor actuals"]
+  materials --> recipes
+  recipes --> product
+  product --> quotes
+  quotes --> jobs
+  jobs --> clients
+  jobs --> actuals
+  actuals -. estimate vs actual .-> materials
+```
+
 ## 1. Foundation: the relational data model
 
 Start here, because nothing above this layer holds if this layer is shaky. Your data already lives in spreadsheets. The job is to turn those columns into a related model, with one canonical row per thing referenced by id, so nothing is duplicated and everything can be joined.
