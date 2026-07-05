@@ -83,6 +83,12 @@ Every export (CLI, library, or browser) includes `docs/map.svg`, a hand-drawn ma
 
 ## What building from it looks like
 
+This is where the worked example starts: six synthetic workbooks, kept the way a real shop keeps them. Both of the money leaks the run will find are already sitting in plain sight here, a sell price typed by hand over the formula and a welding overrun logged next to a note nobody read.
+
+![Northline's messy spreadsheets, as generated: a quote log with a hand-typed sell price and a production log with an unread welding overrun](assets/spreadsheets-before.png)
+
+And this is where it ends, built from those same files and nothing else:
+
 ![An operations report from the Northline Metalworks example: a quote priced by the cost engine, margins across quotes, and estimate versus actual hours](assets/report.png)
 
 This report comes from the worked example in [examples/northline-metalworks](examples/northline-metalworks): a fictional seven-person steel fabrication shop, run end to end. The engine generated its blueprint and starter repo, a coding agent built the first vertical slice from that export, and this is the output: every quote priced through one cost engine, and a welding overrun that the shop's spreadsheets could never have shown. All numbers are synthetic but internally consistent.
